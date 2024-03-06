@@ -538,6 +538,83 @@ else <code class="docutils literal notranslate"><span class="pre">False</span></
 <section id="additional-methods-on-integer-types">
 <h3>整数类型的附加方法<a class="headerlink" href="#additional-methods-on-integer-types" title="Link to this heading">¶</a></h3>
 <p>int 类型实现了 <a class="reference internal" href="numbers.html#numbers.Integral" title="numbers.Integral"><code class="xref py py-class docutils literal notranslate"><span class="pre">numbers.Integral</span></code></a> <a class="reference internal" href="../glossary.html#term-abstract-base-class"><span class="xref std std-term">abstract base class</span></a>。 此外，它还提供了其他几个方法:</p>
+
+
+<div class="admonition note">
+<p class="admonition-title" style="color:red">笔记</p>
+<p>抽象基类的主要目的是强制子类实现某些特定的方法，从而确保子类具有一致性和兼容性。意味着你不能直接实例化它。相反，它是为了被其他类（如 int）继承并实现，以表明这些类遵循某种行为。</p>
+<p>在面向对象编程中，基类（Base Class）或超类（Superclass）是一个被其他类继承的类。它定义了一些公共的方法和属性，这些方法和属性可以被其子类（Derived Class 或 Subclass）共享和复用。基类的目的是为了提供一种代码重用机制，通过它，你可以定义一些通用的功能，然后在子类中根据需要添加或覆盖这些功能。
+基类通常包含一些通用的方法或属性，这些方法或属性对于其所有子类来说都是有意义的。子类可以继承这些方法和属性，并且可以选择性地覆盖（override）或扩展它们。</p>
+</div>
+
+<pre>
+在Python中，numbers.Integral 和 int 是两个不同但相关的概念。
+
+numbers.Integral:
+
+numbers.Integral 是 Python 标准库 numbers 模块中的一个抽象基类。
+它用于表示整数类型的对象，包括正整数、负整数和零。
+它是一个抽象基类，意味着你不能直接实例化它。相反，它是为了被其他类（如 int）继承并实现，以表明这些类遵循某种整数行为。
+通过检查一个对象是否是 numbers.Integral 的实例，你可以确定该对象是否可以被视为一个整数。
+int:
+
+int 是Python的内置整数类型。
+你可以使用 int 来创建和操作整数。例如，x = 42 创建了一个 int 类型的对象。
+int 是 numbers.Integral 的一个子类，这意味着所有的 int 对象都是 numbers.Integral 的实例。
+int 提供了一整套用于操作整数的方法和操作符。
+简而言之，numbers.Integral 是一个抽象基类，用于表示整数类型的对象，而 int 是Python中具体的整数类型，它继承了 numbers.Integral。当你需要一个更一般的方式来引用整数类型时（例如，在编写泛型代码时），你可能会使用 numbers.Integral。而在日常编程中，你通常会直接使用 int 来表示和操作整数。
+</pre>
+<pre>
+在Python中，抽象基类（Abstract Base Class，简称ABC）是一种特殊的类，它不能被直接实例化，而是用于定义其他类应该具有的共同接口或行为。抽象基类的主要目的是强制子类实现某些特定的方法，从而确保子类具有一致性和兼容性。
+
+在Python中，abc模块提供了创建抽象基类的支持。要使用抽象基类，你需要从abc模块中导入ABC（表示抽象基类）和abstractmethod（表示抽象方法）。
+
+以下是一个简单的示例，展示了如何使用抽象基类：
+from abc import ABC, abstractmethod
+
+# 定义一个抽象基类
+class Animal(ABC):
+
+    # 定义一个抽象方法
+    @abstractmethod
+    def speak(self):
+        pass
+
+# 定义一个具体的子类，它必须实现Animal类中的抽象方法
+class Dog(Animal):
+
+    def speak(self):
+        return "Woof!"
+
+# 另一个具体的子类
+class Cat(Animal):
+
+    def speak(self):
+        return "Meow!"
+
+# 创建一个Animal类的实例会导致TypeError，因为Animal是一个抽象基类
+# animal = Animal()
+
+# 创建具体的子类实例
+dog = Dog()
+cat = Cat()
+
+# 调用子类的方法
+print(dog.speak())  # 输出 "Woof!"
+print(cat.speak())  # 输出 "Meow!"
+
+
+
+抽象基类的优点包括：
+
+强制一致性：确保所有子类都实现了必要的接口，这有助于保持代码的整洁和一致。
+
+提高可读性：通过清晰地定义接口，抽象基类使得其他开发者更容易理解类的目的和用法。
+
+易于维护：如果需要在未来修改接口，只需修改抽象基类，而无需逐个修改所有子类。
+
+灵活性：抽象基类允许你根据需求添加新的子类，只要它们满足基类的要求即可。
+</pre>
 <dl class="py method">
 <dt class="sig sig-object py" id="int.bit_length">
 <span class="sig-prename descclassname"><span class="pre">int.</span></span><span class="sig-name descname"><span class="pre">bit_length</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#int.bit_length" title="Link to this definition">¶</a></dt>
