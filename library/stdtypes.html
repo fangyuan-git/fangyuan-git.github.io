@@ -545,7 +545,6 @@ else <code class="docutils literal notranslate"><span class="pre">False</span></
 <p>抽象基类的主要目的是强制子类实现某些特定的方法，从而确保子类具有一致性和兼容性。意味着你不能直接实例化它。相反，它是为了被其他类（如 int）继承并实现，以表明这些类遵循某种行为。</p>
 <p>在面向对象编程中，基类（Base Class）或超类（Superclass）是一个被其他类继承的类。它定义了一些公共的方法和属性，这些方法和属性可以被其子类（Derived Class 或 Subclass）共享和复用。基类的目的是为了提供一种代码重用机制，通过它，你可以定义一些通用的功能，然后在子类中根据需要添加或覆盖这些功能。
 基类通常包含一些通用的方法或属性，这些方法或属性对于其所有子类来说都是有意义的。子类可以继承这些方法和属性，并且可以选择性地覆盖（override）或扩展它们。</p>
-</div>
 
 <pre>
 在Python中，numbers.Integral 和 int 是两个不同但相关的概念。
@@ -615,6 +614,7 @@ print(cat.speak())  # 输出 "Meow!"
 
 灵活性：抽象基类允许你根据需求添加新的子类，只要它们满足基类的要求即可。
 </pre>
+</div>
 <dl class="py method">
 <dt class="sig sig-object py" id="int.bit_length">
 <span class="sig-prename descclassname"><span class="pre">int.</span></span><span class="sig-name descname"><span class="pre">bit_length</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#int.bit_length" title="Link to this definition">¶</a></dt>
@@ -897,6 +897,83 @@ print(cat.speak())  # 输出 "Meow!"
 <section id="iterator-types">
 <span id="typeiter"></span><h2>迭代器类型<a class="headerlink" href="#iterator-types" title="Link to this heading">¶</a></h2>
 <p id="index-18">Python 支持在容器中进行迭代的概念。 这是通过使用两个单独方法来实现的；它们被用于允许用户自定义类对迭代的支持。 将在下文中详细描述的序列总是支持迭代方法。</p>
+<div class="admonition note">
+<p class="admonition-title" style="color:red">笔记</p>
+<pre>
+在Python中，容器（如列表、元组、字典、集合等内置类型）通常已经实现了__iter__()方法，使得它们可以直接用于迭代。但是，如果你想要为一个自定义的容器类实现迭代功能，你需要定义__iter__()方法。
+
+自定义容器类实现__iter__()方法时，你需要返回一个迭代器对象。这个迭代器对象必须实现__iter__()和__next__()方法。通常，你可以通过在容器类内部定义一个内部类来实现迭代器。
+
+下面是一个简单的自定义容器类，它实现了__iter__()方法的例子：
+class MyContainer:
+    def __init__(self, items):
+        self.items = items
+
+    def __iter__(self):
+        # 返回一个迭代器对象
+        return MyContainerIterator(self.items)
+
+class MyContainerIterator:
+    def __init__(self, items):
+        self.items = items
+        self.index = 0
+
+    def __iter__(self):
+        # 迭代器对象本身应该是可迭代的，所以返回自己
+        return self
+
+    def __next__(self):
+        try:
+            item = self.items[self.index]
+            self.index += 1
+            return item
+        except IndexError:
+            raise StopIteration
+
+# 使用自定义容器类
+my_container = MyContainer([1, 2, 3, 4, 5])
+
+# 使用 for 循环遍历自定义容器
+for item in my_container:
+    print(item)
+	
+在这个例子中，MyContainer是一个自定义容器类，它包含一个列表items。MyContainer的__iter__()方法返回了一个MyContainerIterator对象，该对象是一个迭代器。
+
+MyContainerIterator类实现了__iter__()和__next__()方法。__iter__()方法返回迭代器对象本身，这是因为迭代器本身应该是可迭代的。__next__()方法返回容器中的下一个元素，当所有元素都被返回后，它抛出StopIteration异常来结束迭代。
+
+现在，你可以使用for循环来遍历my_container对象，就像遍历内置容器类型一样。每次迭代时，MyContainer的__iter__()方法都会被调用，并返回一个MyContainerIterator对象，然后for循环使用这个迭代器来遍历容器中的元素。
+</pre>
+<pre>
+在Python中，container.__iter__() 和 iterator.__iter__() 之间的主要区别在于它们的作用和上下文。
+
+container.iter():
+
+当我们谈论“container”（容器）时，我们通常指的是一种数据结构，如列表、元组、字典、集合等，它们可以包含其他对象。
+container.__iter__() 是一个方法，当我们在容器类型的对象上调用 iter() 函数时，它会被调用。这个方法返回一个迭代器对象，该对象可以遍历容器中的元素。
+换句话说，container.__iter__() 的目的是为容器提供一个遍历其元素的方式。
+示例：
+
+
+my_list = [1, 2, 3]
+iterator_obj = iter(my_list)
+print(iterator_obj)  # 输出：<list_iterator object at 0x...>
+iterator.iter():
+
+当我们谈论“iterator”（迭代器）时，我们指的是一个实现了 __iter__() 和 __next__() 方法的对象，它可以逐个返回容器中的元素。
+对于迭代器对象本身，iterator.__iter__() 应该返回迭代器对象本身，因为迭代器本身就是可迭代的。这允许我们反复调用 iter() 函数和 for...in 循环来遍历迭代器。
+iterator.__iter__() 的主要目的是确保迭代器对象可以被用在需要可迭代对象的地方，比如 for 循环。
+示例：
+
+
+my_list = [1, 2, 3]
+iterator_obj = iter(my_list)
+iterator_obj_again = iter(iterator_obj)  # 再次调用 iter()
+print(iterator_obj_again is iterator_obj)  # 输出：True
+在这个示例中，iterator_obj 是一个迭代器对象，当我们再次对它调用 iter() 时，它仍然返回自己（iterator_obj_again 与 iterator_obj 是同一个对象）。
+
+总结来说，container.__iter__() 是为容器提供一个迭代器来遍历其元素，而 iterator.__iter__() 是确保迭代器对象本身是可迭代的，即它可以被再次迭代。对于迭代器对象，__iter__() 方法通常只是简单地返回迭代器对象本身。
+</pre>
+</div>
 <p>容器对象要提供 <a class="reference internal" href="../glossary.html#term-iterable"><span class="xref std std-term">iterable</span></a> 支持，必须定义一个方法:</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="container.__iter__">
@@ -922,6 +999,86 @@ print(cat.speak())  # 输出 "Meow!"
 <section id="generator-types">
 <span id="id3"></span><h3>生成器类型<a class="headerlink" href="#generator-types" title="Link to this heading">¶</a></h3>
 <p>Python 的 <a class="reference internal" href="../glossary.html#term-generator"><span class="xref std std-term">generator</span></a> 提供了一种实现迭代器协议的便捷方式。 如果容器对象的 <a class="reference internal" href="#iterator.__iter__" title="iterator.__iter__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__iter__()</span></code></a> 方法以生成器形式实现，它将自动返回一个迭代器对象（从技术上说是一个生成器对象），该对象提供 <code class="xref py py-meth docutils literal notranslate"><span class="pre">__iter__()</span></code> 和 <a class="reference internal" href="../reference/expressions.html#generator.__next__" title="generator.__next__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__next__()</span></code></a> 方法。 有关生成器的更多信息可以参阅 <a class="reference internal" href="../reference/expressions.html#yieldexpr"><span class="std std-ref">yield 表达式的文档</span></a>。</p>
+
+<div class="admonition note">
+<p class="admonition-title" style="color:red">笔记</p>
+<pre>
+在Python中，生成器（generator）是一种特殊类型的迭代器，它允许你逐个生成值，而不是一次性生成整个列表或其他容器中的所有值。生成器提供了一种非常有效的处理大数据集或无限数据集的方式，因为它们只在需要时才生成值，从而节省了内存。
+
+生成器可以通过几种方式创建：
+
+1.生成器函数：一个生成器函数是一个常规函数，但它在需要返回值时使用 yield 关键字而不是 return。每次调用生成器函数时，它会运行到下一个 yield 表达式，然后“暂停”并返回该值。下次调用生成器函数时，它会从上次暂停的地方继续执行。
+def simple_generator():
+    n = 1
+    print('This is printed first')
+    yield n
+    n = 2
+    print('This is printed second')
+    yield n
+
+# 创建生成器对象
+gen = simple_generator()
+
+# 使用 next() 函数或 for 循环来获取生成器的值
+print(next(gen))  # 输出：1，并打印 "This is printed first"
+print(next(gen))  # 输出：2，并打印 "This is printed second"
+
+2.生成器表达式：生成器表达式与列表推导式类似，但它是用圆括号 () 而不是方括号 [] 包围的。生成器表达式会立即返回一个生成器对象，而不是一个列表。
+gen_expr = (x**2 for x in range(5))
+
+# 使用 for 循环遍历生成器表达式
+for value in gen_expr:
+    print(value)  # 输出：0, 1, 4, 9, 16
+	
+3.yield from 表达式：在更复杂的生成器函数中，你可以使用 yield from 来从另一个可迭代对象或生成器中获取值，并将其直接传递给调用者。
+yield from 是 Python 中的一个语法，它用于从子生成器（subgenerator）或迭代器中“委派”值给外层生成器。yield from 使得一个生成器可以“委托”其迭代过程给另一个生成器或迭代器，这对于创建更复杂的生成器逻辑和简化代码结构特别有用。
+
+使用 yield from 时，外层生成器会将控制权暂时交给内层生成器（或迭代器），并且当内层生成器（或迭代器）产生一个新值时，这个值会被直接“发送”回外层生成器的调用者。这意味着在外层生成器的调用者看来，所有值都似乎是由外层生成器产生的。
+
+yield from 不仅可以用于生成器函数，还可以用于任何实现了迭代器协议的对象。
+
+下面是一个简单的例子，演示了如何使用 yield from：
+def count_to(n):
+    for i in range(n):
+        yield i
+
+def echo_with_count(n):
+    yield "Starting count"
+    yield from count_to(n)
+    yield "Count finished"
+
+for value in echo_with_count(5):
+    print(value)
+	
+	
+在这个例子中，echo_with_count 生成器首先产生一个字符串 "Starting count"，然后使用 yield from 将控制权交给 count_to 生成器。count_to 生成器产生 0 到 4 的整数，这些整数直接传递给 echo_with_count 的调用者。最后，echo_with_count 产生字符串 "Count finished"。
+
+使用 yield from 的好处之一是，它可以简化错误处理和异常传播。当内层生成器（或迭代器）中发生异常时，这个异常会被直接传播到外层生成器的调用者，就像异常是在外层生成器中发生的一样。
+
+此外，yield from 也可以用于实现协程（coroutine）的委派，这在异步编程中非常有用。在这种情况下，yield from 用于暂停一个协程的执行，直到另一个协程完成其任务并产生一个值。
+
+
+
+yield 和 return 在 Python 中都用于从函数中返回值，但它们在使用场景、行为以及所属的函数类型上存在一些关键的区别。
+
+1. 使用场景
+return: 通常用于常规函数，用于返回一个值并结束函数的执行。
+yield: 仅用于生成器函数（通过 def 定义，但包含 yield 语句）。生成器函数允许你按需（lazy evaluation）生成值，而不是一次性生成所有值。
+2. 行为
+return: 当函数遇到 return 语句时，它会返回一个值并结束函数的执行。之后的代码不会被执行。
+yield: 当生成器函数遇到 yield 语句时，它会返回一个值，但不会结束函数的执行。相反，它会“暂停”执行，并保存当前的函数状态。当再次请求生成器的下一个值时，函数将从暂停的位置继续执行，直到遇到下一个 yield 语句或函数结束。
+3. 返回值类型
+return: 可以返回任何类型的值（例如整数、字符串、列表、字典等）。
+yield: 通常用于生成一系列的值，每次调用生成器时返回一个值。
+4. 迭代与生成器
+return: 不涉及迭代。函数返回一个值后结束。
+yield: 允许你创建一个可以迭代的对象（即生成器），该对象可以按需生成值。这对于处理大量数据或无限序列特别有用，因为它不需要一次性在内存中生成所有值。
+5. 异常处理
+return: 不会处理或传播异常给调用者。
+yield: 在生成器函数内部，如果发生异常，该异常可以被捕获并处理，或者可以选择传播给调用者。
+</pre>
+</div>
+
 </section>
 </section>
 <section id="sequence-types-list-tuple-range">
