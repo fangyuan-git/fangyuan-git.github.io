@@ -1077,6 +1077,29 @@ yield: 允许你创建一个可以迭代的对象（即生成器），该对象�
 return: 不会处理或传播异常给调用者。
 yield: 在生成器函数内部，如果发生异常，该异常可以被捕获并处理，或者可以选择传播给调用者。
 </pre>
+<p class="admonition-title" style="color:red">如果容器对象的 __iter__() 方法以生成器形式实现，它将自动返回一个迭代器对象（从技术上说是一个生成器对象），该对象提供 __iter__() 和 __next__() 方法。</p>
+<pre>
+在__iter__()方法中返回迭代器对象，通常是通过生成器（generator）来实现的。生成器是一种特殊的迭代器，它使用yield关键字来返回元素，而不是使用return。每次yield被调用时，生成器会暂停并保存其当前状态，直到下次被调用。
+
+下面是一个简单的例子，演示了如何在__iter__()方法中使用生成器来实现迭代器：
+class MyContainer:
+    def __init__(self, data):
+        self.data = data
+
+    def __iter__(self):
+        # 使用生成器来返回迭代器
+        for item in self.data:
+            yield item
+
+# 使用MyContainer类
+container = MyContainer([1, 2, 3, 4, 5])
+
+# 迭代container对象
+for item in container:
+    print(item)
+	
+在这个例子中，MyContainer类定义了一个__iter__()方法，该方法返回一个生成器。当我们在for循环中迭代container对象时，__iter__()方法被调用，并返回一个生成器。然后，for循环使用生成器的__next__()方法来获取并打印每个元素。
+</pre>
 </div>
 
 </section>
