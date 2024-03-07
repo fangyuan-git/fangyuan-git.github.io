@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>问答列表</title>
+<style>
+  .question {
+    margin-bottom: 10px;
+  }
+  .answer {
+    margin-left: 20px;
+    display: none;
+  }
+  .question-header {
+    cursor: pointer;
+  }
+  .search-container {
+    margin-bottom: 10px;
+  }
+  .search-input {
+    width: 200px;
+  }
+  .expand-all, .collapse-all {
+    margin-right: 10px;
+  }
+</style>
+</head>
+<body>
+
+<div class="search-container">
+  <input type="text" id="search-input" class="search-input" placeholder="搜索问题...">
+</div>
+
+<button id="expand-all" class="expand-all">一键展开</button>
+<button id="collapse-all" class="collapse-all">一键收起</button>
+
+<div class="question" id="q1">
+  <div class="question-header">问题1 +</div>
+  <div class="answer">答案1</div>
+</div>
+
+<div class="question" id="q2">
+  <div class="question-header">问题2 +</div>
+  <div class="answer">答案2</div>
+</div>
+
+<div class="question" id="q3">
+  <div class="question-header">问题3 +</div>
+  <div class="answer">答案3</div>
+</div>
+
+<script>
+  // 获取所有的问题和答案元素
+  const questions = document.querySelectorAll('.question');
+  const answers = document.querySelectorAll('.answer');
+  const expandAllButton = document.getElementById('expand-all');
+  const collapseAllButton = document.getElementById('collapse-all');
+  const searchInput = document.getElementById('search-input');
+
+  // 折叠/展开所有答案
+  expandAllButton.addEventListener('click', () => {
+    answers.forEach(answer => answer.style.display = 'block');
+  });
+
+  collapseAllButton.addEventListener('click', () => {
+    answers.forEach(answer => answer.style.display = 'none');
+  });
+
+  // 折叠/展开单个答案
+  questions.forEach(question => {
+    question.querySelector('.question-header').addEventListener('click', () => {
+      const answer = question.querySelector('.answer');
+      if (answer.style.display === 'none') {
+        answer.style.display = 'block';
+        question.querySelector('.question-header').textContent = '问题 -';
+      } else {
+        answer.style.display = 'none';
+        question.querySelector('.question-header').textContent = '问题 +';
+      }
+    });
+  });
+
+  // 搜索功能
+  searchInput.addEventListener('input', () => {
+    const searchTerm = searchInput.value.toLowerCase();
+    questions.forEach(question => {
+      const questionText = question.querySelector('.question-header').textContent.toLowerCase();
+      if (questionText.includes(searchTerm)) {
+        question.style.display = 'block';
+      } else {
+        question.style.display = 'none';
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
