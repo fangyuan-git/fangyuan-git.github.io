@@ -3119,10 +3119,29 @@ for item in container:
 <section id="memory-views">
 <span id="typememoryview"></span><h3>内存视图<a class="headerlink" href="#memory-views" title="Link to this heading">¶</a></h3>
 <p><a class="reference internal" href="#memoryview" title="memoryview"><code class="xref py py-class docutils literal notranslate"><span class="pre">memoryview</span></code></a> 对象允许 Python 代码访问一个对象的内部数据，只要该对象支持 <a class="reference internal" href="../c-api/buffer.html#bufferobjects"><span class="std std-ref">缓冲区协议</span></a> 而无需进行拷贝。</p>
+
+<div class="admonition note">
+<p class="admonition-title" style="color:red">笔记</p>
+<pre>
+memoryview对象就像是一个窗户，通过这个窗户可以直接看到内存中的数据，而不需要复制这些数据。
+
+你可以把内存想象成一个大房间，里面存放着各种数据。而memoryview对象就是这个房间的一扇窗户。通过这扇窗户，你可以直接看到房间里面的数据，而不需要打开房间门进去。这样，在处理大量数据时，使用memoryview对象可以更加高效，因为不需要复制数据，直接通过窗户就可以看到需要的数据。
+
+需要注意的是，虽然memoryview对象可以直接看到内存中的数据，但是并不意味着可以随意修改这些数据。修改内存中的数据需要谨慎操作，否则可能会导致程序崩溃或者数据损坏。
+</pre>
+</div>
+
 <dl class="py class">
 <dt class="sig sig-object py" id="memoryview">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">memoryview</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#memoryview" title="Link to this definition">¶</a></dt>
 <dd><p>创建一个引用 <em>object</em> 的 <a class="reference internal" href="#memoryview" title="memoryview"><code class="xref py py-class docutils literal notranslate"><span class="pre">memoryview</span></code></a> 。 <em>object</em> 必须支持缓冲区协议。支持缓冲区协议的内置对象有 <a class="reference internal" href="#bytes" title="bytes"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></a> 和 <a class="reference internal" href="#bytearray" title="bytearray"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytearray</span></code></a> 。</p>
+<div class="admonition note">
+<p class="admonition-title" style="color:red">笔记</p>
+<pre>
+object必须支持缓冲区协议（Object with Buffer Protocol）才能像缓冲区一样被处理，进行切片、索引、迭代等操作。
+
+缓冲区协议是一种Python协议，它定义了一组方法，使得对象可以像字节数组一样被访问和操作。这些方法包括getitem()、setitem()、len()、str()等。通过实现这些方法，对象可以被视为一个缓冲区，可以被传递给需要缓冲区的函数和方法。这种机制可以提高Python的性能和灵活性，特别是在处理大量数据时</pre>
+</div>
 <p><a class="reference internal" href="#memoryview" title="memoryview"><code class="xref py py-class docutils literal notranslate"><span class="pre">memoryview</span></code></a> 有 <strong>元素</strong> 的概念， <strong>元素</strong> 指由原始 <em>object</em> 处理的原子内存单元。对于许多简单的类型，如 <a class="reference internal" href="#bytes" title="bytes"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></a> 和 <a class="reference internal" href="#bytearray" title="bytearray"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytearray</span></code></a> ，一个元素是一个字节，但其他类型，如 <a class="reference internal" href="array.html#array.array" title="array.array"><code class="xref py py-class docutils literal notranslate"><span class="pre">array.array</span></code></a> 可能有更大的元素。</p>
 <p><code class="docutils literal notranslate"><span class="pre">len(view)</span></code> 等于 <a class="reference internal" href="#memoryview.tolist" title="memoryview.tolist"><code class="xref py py-class docutils literal notranslate"><span class="pre">tolist</span></code></a> 的长度，即视图的嵌套列表表示形式。 如果 <code class="docutils literal notranslate"><span class="pre">view.ndim</span> <span class="pre">=</span> <span class="pre">1</span></code>，它将等于视图中元素的数量。</p>
 <div class="versionchanged">
@@ -3574,6 +3593,17 @@ for item in container:
 </section>
 <section id="set-types-set-frozenset">
 <span id="types-set"></span><h2>集合类型 --- <a class="reference internal" href="#set" title="set"><code class="xref py py-class docutils literal notranslate"><span class="pre">set</span></code></a>, <a class="reference internal" href="#frozenset" title="frozenset"><code class="xref py py-class docutils literal notranslate"><span class="pre">frozenset</span></code></a><a class="headerlink" href="#set-types-set-frozenset" title="Link to this heading">¶</a></h2>
+<div class="admonition note">
+<p class="admonition-title" style="color:red">笔记</p>
+<pre>
+set和frozenset的区别如下：
+
+可变性：set是可变集合，它的元素可以进行增、删、改操作；而frozenset是不可变集合，它的元素不能进行增、删、改操作。
+使用场景：set常用于元素的添加、更新、删除以及交集、并集、差集等操作；而frozenset则常用于查找等不可变操作，以及需要将多个集合作为字典类型的键时。
+运行效率：由于frozenset的不变性，其运行效率通常高于set。
+创建方式：set可以通过大括号或set()函数创建；而frozenset则必须通过frozenset()函数创建。
+</pre>
+</div>
 <p id="index-51"><em class="dfn">set</em> 对象是由具有唯一性的 <a class="reference internal" href="../glossary.html#term-hashable"><span class="xref std std-term">hashable</span></a> 对象所组成的无序多项集。 常见的用途包括成员检测、从序列中去除重复项以及数学中的集合类计算，例如交集、并集、差集与对称差集等等。 （关于其他容器对象请参看 <a class="reference internal" href="#dict" title="dict"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>, <a class="reference internal" href="#list" title="list"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a> 与 <a class="reference internal" href="#tuple" title="tuple"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a> 等内置类，以及 <a class="reference internal" href="collections.html#module-collections" title="collections: Container datatypes"><code class="xref py py-mod docutils literal notranslate"><span class="pre">collections</span></code></a> 模块。）</p>
 <p>与其他多项集一样，集合也支持 <code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">in</span> <span class="pre">set</span></code>, <code class="docutils literal notranslate"><span class="pre">len(set)</span></code> 和 <code class="docutils literal notranslate"><span class="pre">for</span> <span class="pre">x</span> <span class="pre">in</span> <span class="pre">set</span></code>。 作为一种无序的多项集，集合并不记录元素位置或插入顺序。 相应地，集合不支持索引、切片或其他序列类的操作。</p>
 <p>目前有两种内置集合类型，<a class="reference internal" href="#set" title="set"><code class="xref py py-class docutils literal notranslate"><span class="pre">set</span></code></a> 和 <a class="reference internal" href="#frozenset" title="frozenset"><code class="xref py py-class docutils literal notranslate"><span class="pre">frozenset</span></code></a>。 <a class="reference internal" href="#set" title="set"><code class="xref py py-class docutils literal notranslate"><span class="pre">set</span></code></a> 类型是可变的 --- 其内容可以使用 <code class="xref py py-meth docutils literal notranslate"><span class="pre">add()</span></code> 和 <code class="xref py py-meth docutils literal notranslate"><span class="pre">remove()</span></code> 这样的方法来改变。 由于是可变类型，它没有哈希值，且不能被用作字典的键或其他集合的元素。 <a class="reference internal" href="#frozenset" title="frozenset"><code class="xref py py-class docutils literal notranslate"><span class="pre">frozenset</span></code></a> 类型是不可变并且为 <a class="reference internal" href="../glossary.html#term-hashable"><span class="xref std std-term">hashable</span></a> --- 其内容在被创建后不能再改变；因此它可以被用作字典的键或其他集合的元素。</p>
@@ -4112,6 +4142,63 @@ for item in container:
 </section>
 <section id="type-annotation-types-generic-alias-union">
 <h2>类型注解的类型 --- <a class="reference internal" href="#types-genericalias"><span class="std std-ref">Generic Alias</span></a> 、 <a class="reference internal" href="#types-union"><span class="std std-ref">Union</span></a><a class="headerlink" href="#type-annotation-types-generic-alias-union" title="Link to this heading">¶</a></h2>
+<div class="admonition note">
+<p class="admonition-title" style="color:red">笔记</p>
+<pre>
+在Python的类型提示（Type Hints）中，Generic Alias 和 Union 是两种常见的类型注解形式。
+
+1. Generic Alias
+Generic Alias 是泛型别名的意思。它通常用于表示一个类的实例，该实例有特定的类型参数。泛型允许你为类或函数定义一种“模板”形式，然后在实际使用时提供具体的类型。
+
+例如，Python的内置集合类型 List、Dict、Tuple 等都是泛型。你可以为它们提供具体的类型参数来创建泛型别名。
+
+
+from typing import List
+
+# 创建一个 List 的泛型别名，表示这个列表的元素是整数
+IntList = List[int]
+
+# 现在你可以使用 IntList 作为类型注解
+def process_integers(numbers: IntList) -> None:
+    for number in numbers:
+        print(number)
+
+在这个例子中，IntList 是一个泛型别名，它表示一个整数列表。
+
+2. Union
+Union 表示一个值可以是几种类型中的任何一种。它使用 | 符号来表示。
+
+在Python的类型提示中，Union 类型通常使用 | 符号来表示“或”关系，即一个值可以是多个类型之一。不过，在早期的Python版本中（Python 3.9之前），typing.Union 是唯一正确的方式来表示联合类型，即使你并没有直接使用 | 符号。
+
+从Python 3.10开始，| 符号作为联合类型的运算符被正式添加到语言规范中，使得你可以更简洁地表示联合类型，而无需显式地导入和使用 typing.Union。
+
+下面是使用 typing.Union 的方式（适用于所有Python版本）：
+
+from typing import Union
+
+# 使用 typing.Union 定义联合类型
+NumberOrString = Union[int, str]
+
+def print_value(value: NumberOrString) -> None:
+    print(value)
+
+print_value(42)  # 输出整数
+print_value("hello")  # 输出字符串
+
+以及从Python 3.10开始，你可以直接使用 | 符号（适用于Python 3.10及以上版本）：
+
+# 直接使用 | 符号定义联合类型
+NumberOrString = int | str
+
+def print_value(value: NumberOrString) -> None:
+    print(value)
+
+print_value(42)  # 输出整数
+print_value("hello")  # 输出字符串
+
+使用 | 符号的好处是代码更简洁，而且更符合Python的语法习惯。不过，如果你正在使用的Python版本低于3.10，或者为了保持代码兼容性，你可能需要继续使用 typing.Union 的方式来定义联合类型。
+</pre>
+</div>
 <p id="index-55"><a class="reference internal" href="../glossary.html#term-annotation"><span class="xref std std-term">type annotations</span></a> 的内置类型为 <a class="reference internal" href="#types-genericalias"><span class="std std-ref">Generic Alias</span></a> 和 <a class="reference internal" href="#types-union"><span class="std std-ref">Union</span></a>。</p>
 <section id="generic-alias-type">
 <span id="types-genericalias"></span><h3>GenericAlias 类型<a class="headerlink" href="#generic-alias-type" title="Link to this heading">¶</a></h3>
@@ -4191,6 +4278,11 @@ for item in container:
 <section id="standard-generic-classes">
 <h4>标准泛型类<a class="headerlink" href="#standard-generic-classes" title="Link to this heading">¶</a></h4>
 <p>下列标准库类支持形参化的泛型。 此列表并不是详尽无遗的。</p>
+<div class="admonition note">
+<p class="admonition-title" style="color:red">笔记</p>
+<pre>
+如果你想要判断一个标准库类是否支持泛型，你可以查看其文档和类型提示。通常，如果类在定义时使用了 typing.TypeVar，那么它就支持泛型。</pre>
+</div>
 <ul class="simple">
 <li><p><a class="reference internal" href="#tuple" title="tuple"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a></p></li>
 <li><p><a class="reference internal" href="#list" title="list"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a></p></li>
@@ -4250,6 +4342,69 @@ for item in container:
 </section>
 <section id="special-attributes-of-genericalias-objects">
 <h4><code class="docutils literal notranslate"><span class="pre">GenericAlias</span></code> 对象的特殊属性<a class="headerlink" href="#special-attributes-of-genericalias-objects" title="Link to this heading">¶</a></h4>
+<div class="admonition note">
+<p class="admonition-title" style="color:red">笔记</p>
+<pre>
+在Python的类型提示中，GenericAlias 对象通常出现在使用泛型类型注解时。当你使用形如 T 的类型变量来定义泛型类或函数，并在实例化或使用时提供具体的类型，Python的 typing 模块会创建一个 GenericAlias 对象来表示这个具体的泛型实例。
+
+例如，考虑下面的代码：
+
+from typing import TypeVar, List
+
+T = TypeVar('T')
+
+def process_items(items: List[T]) -> None:
+    for item in items:
+        print(item)
+
+# 使用整数类型的List
+process_items_int = process_items[int]  # 这里会产生一个GenericAlias对象
+
+# 使用字符串类型的List
+process_items_str = process_items[str]  # 同样会产生一个GenericAlias对象
+在这个例子中，process_items 是一个泛型函数，它接受一个类型为 List[T] 的参数。当我们为 T 提供具体的类型（如 int 或 str）时，process_items[int] 和 process_items[str] 就变成了 GenericAlias 对象，它们分别代表 List[int] 和 List[str] 类型。
+
+GenericAlias 对象在类型检查、类型推断和类型注释中很有用，因为它们允许我们更精确地表示泛型的实例化。然而，通常你不需要直接与 GenericAlias 对象交互；它们是由类型提示系统内部使用的。
+
+你可以通过 typing.get_origin() 和 typing.get_args() 函数来获取泛型别名的基础类型和它的参数。例如：
+
+from typing import get_origin, get_args
+
+origin = get_origin(process_items_int)  # 输出: List
+args = get_args(process_items_int)     # 输出: (int,)
+在这个例子中，get_origin(process_items_int) 返回 List，表示 process_items_int 的基础类型是 List；而 get_args(process_items_int) 返回一个包含单一元素 int 的元组，表示 List 的参数是 int。
+</pre>
+</div>
+<div class="admonition note">
+<p class="admonition-title" style="color:red">T = TypeVar('T')</p>
+<pre>
+是的，你可以这样写 T = TypeVar('U')，但是这样写的话，你定义的类型变量 T 的名字实际上是 'U'，而不是 'T'。在 TypeVar 中，你提供的字符串参数（在这个例子中是 'U'）是用于类型变量的名字，而不是用于变量 T 的名字。
+
+这样做是可以的，但是可能会引起一些混淆，因为变量名 T 和类型变量名 'U' 不匹配。通常，为了保持代码的可读性和一致性，我们会让变量名（T）和类型变量名（也是 'T'）保持一致。
+
+这里是一个例子，展示了如何定义和使用一个类型变量，尽管变量名和类型变量名不一致：
+
+from typing import TypeVar, List
+
+# 定义类型变量，名字为 'U'，但是存储在变量 T 中
+T = TypeVar('U')
+
+# 使用类型变量 T（其类型是 'U'）作为函数参数的类型注解
+def process_elements(elements: List[T]) -> None:
+    for element in elements:
+        # 对元素进行处理，这里不实际修改元素
+        pass
+
+# 调用函数，传递一个整数列表
+process_elements([1, 2, 3])  # 这里 T 被推断为 int
+
+# 调用函数，传递一个字符串列表
+process_elements(["a", "b", "c"])  # 这里 T 被推断为 str
+
+
+在这个例子中，尽管 T 是我们用来存储 TypeVar 对象的变量名，但类型变量的实际名字是 'U'。这不会影响类型注解的工作方式，因为类型检查器会基于上下文理解 T 所代表的类型变量。然而，为了代码的可读性和维护性，通常建议保持变量名和类型变量名的一致性。
+</pre>
+</div>
 <p>应用参数后的泛型都实现了一些特殊的只读属性：</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="genericalias.__origin__">
