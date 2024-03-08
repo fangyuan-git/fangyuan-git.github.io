@@ -64,112 +64,424 @@
 <section id="more-control-flow-tools">
 
 <!--start-->
-<section id="if-statements">
-<h2>4.8. 函数定义详解</h2>
+<section id="MagicMethod">
+<h2>魔法方法大全</h2>
 <pre style="white-space: pre-wrap;">
-在Python中，抽象基类（Abstract Base Class，简称ABC）是一种特殊的类，它不能被直接实例化，而是用于定义其他类应该具有的共同接口或行为。抽象基类的主要目的是强制子类实现某些特定的方法，从而确保子类具有一致性和兼容性。
+<h3>对象创建和销毁</h3>
+obj = ClassName()：调用__new__和__init__方法。
+del obj：调用__del__方法。
 
-在Python中，abc模块提供了创建抽象基类的支持。要使用抽象基类，你需要从abc模块中导入ABC（表示抽象基类）和abstractmethod（表示抽象方法）。
+<h3>算术运算符</h3>
+obj1 + obj2：如果obj1和obj2是类的实例，调用obj1.__add__(obj2)。
+obj1 - obj2：调用obj1.__sub__(obj2)。
+obj1 * obj2：调用obj1.__mul__(obj2)。
+obj1 / obj2：调用obj1.__truediv__(obj2)（Python 3中的除法）。
+obj1 // obj2：调用obj1.__floordiv__(obj2)（整数除法）。
+obj1 % obj2：调用obj1.__mod__(obj2)（取模）。
+obj1 ** obj2：调用obj1.__pow__(obj2)（幂运算）。
 
-以下是一个简单的示例，展示了如何使用抽象基类：
-from abc import ABC, abstractmethod
+<h3>比较运算符</h3>
+obj1 == obj2：调用obj1.__eq__(obj2)。
+obj1 != obj2：调用obj1.__ne__(obj2)。
+obj1 < obj2：调用obj1.__lt__(obj2)。
+obj1 > obj2：调用obj1.__gt__(obj2)。
+obj1 <= obj2：调用obj1.__le__(obj2)。
+obj1 >= obj2：调用obj1.__ge__(obj2)。
 
-# 定义一个抽象基类
-class Animal(ABC):
+<h3>赋值运算符</h3>
+obj1 += obj2：如果obj1是类的实例，调用obj1.__iadd__(obj2)。
+obj1 -= obj2：调用obj1.__isub__(obj2)。
+obj1 *= obj2：调用obj1.__imul__(obj2)。
+obj1 /= obj2：调用obj1.__itruediv__(obj2)。
+obj1 //= obj2：调用obj1.__ifloordiv__(obj2)。
+obj1 %= obj2：调用obj1.__imod__(obj2)。
+obj1 **= obj2：调用obj1.__ipow__(obj2)。
 
-    # 定义一个抽象方法
-    @abstractmethod
-    def speak(self):
-        pass
+<h3>成员测试运算符</h3>
+obj1 in obj2：如果obj2是类的实例，调用obj2.__contains__(obj1)。
 
-# 定义一个具体的子类，它必须实现Animal类中的抽象方法
-class Dog(Animal):
+<h3>属性访问</h3>
+obj.attribute：如果obj是类的实例，并且attribute是一个属性，则直接返回该属性的值。
+obj.method()：如果obj是类的实例，并且method是一个方法，则调用obj.method()。
 
-    def speak(self):
-        return "Woof!"
+<h3>索引和切片</h3>
+obj[index]：如果obj是类的实例，并且定义了__getitem__方法，调用obj.__getitem__(index)。
+obj[start:stop:step]：如果obj是类的实例，并且定义了__getitem__方法，调用obj.__getitem__(slice(start, stop, step))。
+obj[index] = value：如果obj是类的实例，并且定义了__setitem__方法，调用obj.__setitem__(index, value)。
+del obj[index]：如果obj是类的实例，并且定义了__delitem__方法，调用obj.__delitem__(index)。
 
-# 另一个具体的子类
-class Cat(Animal):
+<h3>长度和容器大小</h3>
+len(obj)：如果obj是类的实例，并且定义了__len__方法，调用obj.__len__()。
 
-    def speak(self):
-        return "Meow!"
+<h3>转换方法</h3>
+str(obj)：如果obj是类的实例，并且定义了__str__方法，调用obj.__str__()。
+repr(obj)：如果obj是类的实例，并且定义了__repr__方法，调用obj.__repr__()。
 
-# 创建一个Animal类的实例会导致TypeError，因为Animal是一个抽象基类
-# animal = Animal()
-
-# 创建具体的子类实例
-dog = Dog()
-cat = Cat()
-
-# 调用子类的方法
-print(dog.speak())  # 输出 "Woof!"
-print(cat.speak())  # 输出 "Meow!"
-
-# 定义一个具体的子类，它必须实现Animal类中的抽象方法
-class Dog(Animal):
-
-    def speak(self):
-        return "Woof!"
-
-# 另一个具体的子类
-class Cat(Animal):
-
-    def speak(self):
-        return "Meow!"
-
-# 创建一个Animal类的实例会导致TypeError，因为Animal是一个抽象基类
-# animal = Animal()
-
-# 创建具体的子类实例
-
-
-# 定义一个具体的子类，它必须实现Animal类中的抽象方法
-class Dog(Animal):
-
-    def speak(self):
-        return "Woof!"
-
-# 另一个具体的子类
-class Cat(Animal):
-
-    def speak(self):
-        return "Meow!"
-
-# 创建一个Animal类的实例会导致TypeError，因为Animal是一个抽象基类
-# animal = Animal()
-
-# 创建具体的子类实例
-抽象基类的优点包括：
-
-强制一致性：确保所有子类都实现了必要的接口，这有助于保持代码的整洁和一致。
-
-# 定义一个具体的子类，它必须实现Animal类中的抽象方法
-class Dog(Animal):
-
-    def speak(self):
-        return "Woof!"
-
-# 另一个具体的子类
-class Cat(Animal):
-
-    def speak(self):
-        return "Meow!"
-
-# 创建一个Animal类的实例会导致TypeError，因为Animal是一个抽象基类
-# animal = Animal()
-
-# 创建具体的子类实例
-提高可读性：通过清晰地定义接口，抽象基类使得其他开发者更容易理解类的目的和用法。
-
-易于维护：如果需要在未来修改接口，只需修改抽象基类，而无需逐个修改所有子类。
-
-灵活性：抽象基类允许你根据需求添加新的子类，只要它们满足基类的要求即可。
+<h3>函数调用</h3>
+obj()：如果obj是类的实例，并且定义了__call__方法，调用obj.__call__()。
 </pre>
 
 </section>
 <!--end-->
+<!--start-->
+<section id="metaclass">
+<h2>元类</h2>
+<pre style="white-space: pre-wrap;">
+元类（Metaclass）是Python的高级特性，用于控制类的创建行为。在Python中，一切都是对象，包括类本身。通常，类是由元类来创建的。元类就是创建类的“类”。默认情况下，Python中所有的类都是由内置的type类型来创建的，因此type是Python中所有类的元类。
+
+你可以通过定义一个类并设置其__metaclass__属性或使用metaclass关键字参数来指定一个自定义的元类。当定义一个新类时，Python会使用指定的元类来创建这个类。
+
+下面是一个简单的元类示例，它会在类被创建时打印一条消息：
+
+class MyMeta(type):
+    def __new__(cls, name, bases, attrs):
+        print(f"Creating class {name}")
+        return super().__new__(cls, name, bases, attrs)
+
+class MyClass(metaclass=MyMeta):
+    pass
+
+# 当MyClass被定义时，会调用MyMeta的__new__方法
+
+在这个例子中，MyMeta是一个元类，它继承自内置的type。我们重写了MyMeta的__new__方法，该方法在类创建时被调用。当MyClass被定义时，Python使用MyMeta来创建MyClass，并调用MyMeta.__new__。
+
+元类的主要用途包括：
+
+1.控制类的创建：你可以通过元类来修改类的属性，添加方法，或者改变类的行为。
+
+2.实现单例模式：元类可以用来确保一个类只有一个实例存在。
+
+3.自动注册：元类可以用来在类被定义时自动将其注册到某个地方，例如一个全局的注册表。
+
+4.修改类属性：元类可以在类被创建时修改其属性，例如添加、删除或修改类的方法。
+
+5.动态创建类：元类可以在运行时动态地创建类。
+
+6.元编程：元类提供了一种强大的元编程工具，允许你在类的创建过程中执行复杂的逻辑。
+
+需要注意的是，尽管元类提供了强大的功能，但它们应该谨慎使用。在大多数情况下，你不需要自定义元类。只有在需要更高级的控制和定制时，才应该考虑使用元类。过度使用元类可能会导致代码难以理解和维护。
+
+下面是一个稍微复杂一点的元类示例，它会在类被创建时添加一个新的方法：
+
+class MyMeta(type):
+    def __new__(cls, name, bases, attrs):
+        # 添加一个新的方法到类中
+        attrs['hello'] = lambda self: f"Hello from {name}!"
+        return super().__new__(cls, name, bases, attrs)
+
+class MyClass(metaclass=MyMeta):
+    pass
+
+# 创建MyClass的实例
+instance = MyClass()
+
+# 调用新添加的方法
+print(instance.hello())  # 输出: Hello from MyClass!
+
+在这个例子中，元类MyMeta在创建类时添加了一个名为hello的方法到类中。因此，所有由MyMeta创建的类都会自动拥有这个方法。
+</pre>
+
+</section>
+<!--end-->
+<section id="metaclass_and_baseclass">
+<h2>元类和基类的区别</h2>
+<pre style="white-space: pre-wrap;">
+在Python中，类的创建过程涉及到元类的__new__方法和基类的__new__方法，但它们的作用和调用时机是不同的。
+
+首先，我们需要理解元类（metaclass）和基类（base class）的区别：
+
+·元类（Metaclass）：元类是用于创建类的“类”。在Python中，type是默认的元类，它负责创建所有的类对象。你可以通过继承type来创建自定义的元类，以定制类的创建过程。
+
+·基类（Base Class）：基类是你想要继承的类。在面向对象编程中，你可以通过继承一个或多个基类来创建子类，从而重用基类的代码和功能。
+
+当创建一个子类时，Python会按照以下步骤调用__new__方法：
+
+1.元类的__new__方法：首先，Python会调用元类的__new__方法来创建子类对象。这个调用是由Python解释器自动完成的，你不需要显式地调用它。元类的__new__方法通常用于定制类的创建过程，比如添加类属性、修改类名等。
+
+2.基类的__init__方法：在元类的__new__方法返回子类对象之后，Python会调用基类的__init__方法来初始化子类对象。这个调用是在子类对象被创建之后进行的，用于设置实例属性、执行其他初始化操作等。
+
+重要的是要注意，基类的__new__方法不会被直接调用来创建子类对象。子类对象的创建是由元类的__new__方法负责的。基类的__new__方法通常用于创建实例对象（即类的实例），而不是用于创建类对象本身。
+
+总结一下，子类在创建过程中会调用元类的__new__方法来创建类对象，而不会直接调用基类的__new__方法。元类的__new__方法负责定制类的创建过程，而基类的__init__方法用于初始化子类对象。
+
+<h2>元类和基类三问</h2>
+<pre style="white-space: pre-wrap;">
+<h3>一问：子类可以重写基类的方法吗</h3>
+答：子类可以重写基类的方法。
+
+在面向对象的编程中，子类继承基类后可以重写基类的方法，这种操作一般被称为方法覆盖或方法重写。子类在重写基类方法时，方法名、参数列表必须与基类中被重写的方法一致，同时子类方法的访问权限不能低于基类中被重写的方法的访问权限。
+
+<h3>二问：子类可以重写元类的方法吗</h3>
+答：子类本身不能直接重写元类的方法，因为元类是用来创建类的，而子类是由元类创建的实例。但是，子类可以通过以下方式间接地影响或“重写”元类的方法行为：
+
+1.覆盖方法：子类可以覆盖从元类中继承来的方法。这通常发生在元类为类添加方法时，子类可以定义相同名称的方法来覆盖它们。但这不是真正的重写元类方法，而是子类覆盖了从元类继承的方法。
+
+2.元类继承：你可以创建一个新的元类，它继承自原始的元类并覆盖或扩展其方法。然后，你可以让子类使用这个新的元类，从而改变类的创建行为。
+
+3.使用类装饰器：类装饰器是一种在类定义之后修改类的方式。你可以创建一个装饰器来修改类，这个装饰器可以检查类的元类和方法，并在必要时进行修改或覆盖。
+
+4.元类钩子：元类的某些方法，如 __prepare__、__init__、__call__ 等，可以在类的生命周期中的不同阶段被调用。子类可以通过定制这些钩子方法来影响类的创建和初始化过程。
+
+5.元类属性：你可以在元类中定义属性或方法，这些属性或方法可以被子类访问或修改。这样，子类可以通过修改这些属性或方法来影响元类的行为。
+
+举个例子，假设我们有一个元类 MyMeta，它有一个 __new__ 方法用于控制类的创建：
+
+class MyMeta(type):
+    def __new__(cls, name, bases, attrs):
+        print(f"Creating class {name} with MyMeta")
+        return super().__new__(cls, name, bases, attrs)
+
+class MyClass(metaclass=MyMeta):
+    pass
+	
+如果我们想要“重写”MyMeta 的 __new__ 方法，我们需要创建一个新的元类，并在这个新元类中重写 __new__ 方法：
+
+class NewMeta(MyMeta):
+    def __new__(cls, name, bases, attrs):
+        print(f"Creating class {name} with NewMeta (overriding MyMeta's __new__)")
+        return super().__new__(cls, name, bases, attrs)
+
+class MySubClass(metaclass=NewMeta):
+    pass
+	
+在这个例子中，MySubClass 使用 NewMeta 作为元类，NewMeta 重写了 MyMeta 的 __new__ 方法。因此，当创建 MySubClass 时，将调用 NewMeta 的 __new__ 方法，而不是 MyMeta 的。
+
+总结来说，子类本身不能直接重写元类的方法，但可以通过上述方式来间接地影响或改变元类的行为。
+
+<h3>三问：如果类A是继承于type的自定义元类，类B是以A为元类，类C继承于类B，那么类C可以重写new方法吗</h3>
+答:在Python中，__new__方法是一个静态方法，用于创建并返回类的实例。当创建类的新实例时，Python首先调用__new__方法以创建实例对象，然后调用__init__方法来初始化该对象。
+
+当你有一个自定义元类继承自type，并且有一个类使用该元类，那么你可以在这个类中重写__new__方法。但是，需要注意的是，由于元类控制了类的创建过程，因此__new__方法的重写可能受到元类的影响。
+
+以下是一个简单的示例，展示了如何在类B中重写__new__方法，而类B是使用自定义元类A作为元类的：
+
+class A(type):
+    def __new__(cls, name, bases, attrs):
+        print(f"Creating class {name}")
+        return super().__new__(cls, name, bases, attrs)
+
+class B(metaclass=A):
+    def __new__(cls, *args, **kwargs):
+        print(f"Creating instance of {cls.__name__}")
+        return super().__new__(cls)
+
+class C(B):
+    pass
+
+# 创建C类的实例
+c_instance = C()
+
+# 输出：
+# Creating class B
+# Creating instance of C
+在这个例子中，A是一个自定义元类，B是使用A作为元类的类，并且重写了__new__方法。C是继承自B的类，它没有重写__new__方法。当我们创建C的实例时，B的__new__方法会被调用，因为C继承了B的__new__方法。
+
+如果你想在C类中重写__new__方法，你可以这样做：
+
+class C(B):
+    def __new__(cls, *args, **kwargs):
+        print(f"Creating instance of {cls.__name__} specifically in C")
+        return super().__new__(cls)
+
+# 创建C类的实例
+c_instance = C()
+
+# 输出：
+# Creating class B
+# Creating instance of C specifically in C
+在这个修改后的例子中，C类重写了__new__方法，因此当创建C的实例时，会调用C的__new__方法而不是B的。注意，即使C重写了__new__方法，B的__new__方法仍然会在C的__new__方法被调用之前由元类A控制创建C类对象的过程中被执行。这是因为元类控制了类的创建，而__new__方法控制了实例的创建。
+</pre>
+<h2>使用元类实现单例模式</h2>
+<pre style="white-space: pre-wrap;">
+在Python中，你可以使用元类来实现单例模式。单例模式是一种设计模式，它确保一个类只有一个实例，并提供一个全局访问点来访问该实例。
+
+元类在Python中是用来创建类的“类”。默认情况下，type是Python中所有类的元类，但你可以通过定义__metaclass__属性或使用metaclass关键字参数来指定自定义的元类。
+
+下面是一个使用元类实现单例模式的示例：
+
+class SingletonMeta(type):
+    _instances = {}
+
+    def __call__(cls, *args, **kwargs):
+        if cls not in cls._instances:
+            cls._instances[cls] = super(SingletonMeta, cls).__call__(*args, **kwargs)
+        return cls._instances[cls]
+
+class Singleton(metaclass=SingletonMeta):
+    def __init__(self, value):
+        self.value = value
+
+# 创建Singleton类的实例
+instance1 = Singleton(10)
+instance2 = Singleton(20)
+
+# 检查两个实例是否是同一个对象
+print(instance1 is instance2)  # 输出: True
+
+# 修改实例的属性，将会影响所有实例
+instance1.value = 30
+print(instance2.value)  # 输出: 30
+
+在这个例子中，SingletonMeta是一个元类，它维护了一个_instances字典来存储每个类的单例实例。__call__方法被重写，以便在创建新实例之前检查该类的实例是否已存在于_instances字典中。如果存在，则直接返回已存在的实例；否则，创建一个新实例并将其存储在_instances字典中。
+
+Singleton类使用metaclass=SingletonMeta来指定其元类为SingletonMeta。因此，当你尝试创建Singleton类的多个实例时，实际上你总是得到同一个实例。
+
+请注意，这种实现方式在多线程环境中可能不是线程安全的。如果你需要在多线程环境中使用单例模式，你可能需要添加适当的锁机制来确保线程安全。
+
+<h3>如果再新建子类继承Singleton，子类还是单例吗</h3>
+
+是的，如果子类继承自使用元类实现的单例类（如上面的Singleton类），那么子类也将是单例的，前提是子类没有重写__new__方法或采取其他措施来破坏单例模式。
+
+在Python中，单例模式的实现依赖于类的创建过程，特别是__new__方法和元类的__call__方法。当使用元类实现单例时，元类控制类的创建过程，确保类的实例是唯一的。如果子类继承了这样的单例类，并且没有改变这个行为，那么子类也将遵循相同的单例模式。
+
+这里是一个例子，展示了子类继承自上面的Singleton类并保持单例行为：
 
 
+# 之前的Singleton类和SingletonMeta元类定义保持不变
+
+# 创建一个继承自Singleton的子类
+class SubSingleton(Singleton):
+    pass
+
+# 尝试创建SubSingleton类的两个实例
+instance1 = SubSingleton(10)
+instance2 = SubSingleton(20)
+
+# 检查两个实例是否是同一个对象
+print(instance1 is instance2)  # 输出: True
+
+# 修改实例的属性，将会影响所有实例
+instance1.value = 30
+print(instance2.value)  # 输出: 30
+
+在这个例子中，SubSingleton类继承自Singleton类。由于Singleton类使用了元类SingletonMeta来确保只有一个实例被创建，SubSingleton类也会表现出单例行为。无论我们尝试多少次创建SubSingleton的实例，都会得到同一个实例。
+
+然而，如果子类重写了__new__方法并且没有正确地实现单例逻辑，或者采取了其他措施（如使用类变量代替实例变量），那么子类可能就不再是单例了。因此，在创建子类时，需要确保它们不会破坏父类的单例行为。
+</pre>
+</pre>
+
+</section>
+<section id="type">
+<h2>type</h2>
+<pre style="white-space: pre-wrap;">
+在Python中，type是一个内置函数，同时也是一个元类（metaclass）。作为函数，type()用于动态地创建类；作为元类，type决定了如何创建类。
+
+<h3>作为函数使用</h3>
+type()函数有几种不同的用法：
+
+1.创建类对象：type()可以用来动态地创建一个类。这是通过传递类名、基类元组（可以为空）和一个包含类体方法的字典来实现的。
+
+MyClass = type('MyClass', (), {'method': lambda self: print('Hello, world!')})
+obj = MyClass()
+obj.method()  # 输出: Hello, world!
+
+2.获取对象的类型：type()也可以用来获取一个对象的类型。
+
+x = 10
+print(type(x))  # 输出: class 'int'
+
+3.获取类型的类型：type()还可以用来获取类型的类型，即元类。
+
+print(type(type))  # 输出: class 'type'
+
+<h3>作为元类使用</h3>
+在Python中，类也是对象，它们是由元类创建的。默认情况下，所有类都是由type元类创建的。type元类决定了类的创建过程。
+
+当你定义一个类时，实际上是在告诉Python：“我想创建一个新的类型，它继承自这些基类，并具有这些方法和属性。”Python使用type元类来根据这些信息创建新的类对象。
+
+<h3>自定义元类</h3>
+你可以通过继承type来创建自定义的元类，从而改变类的创建过程。这通常用于实现一些高级功能，如类属性的自动创建、方法修饰等。
+
+class MyMeta(type):
+    def __new__(cls, name, bases, attrs):
+        print(f"Creating class {name}")
+        return super().__new__(cls, name, bases, attrs)
+
+class MyClass(metaclass=MyMeta):
+    pass
+
+# 输出: Creating class MyClass
+在这个例子中，MyMeta是一个自定义元类，它重写了__new__方法来在创建类时打印一条消息。MyClass类使用metaclass关键字参数来指定其元类为MyMeta。
+
+总的来说，type在Python中是一个功能强大的工具，既可以用来动态地创建类，也可以用来定义和控制类的创建过程。
+</pre>
+
+</section>
+<section id="super">
+<h2>super</h2>
+<pre style="white-space: pre-wrap;">
+在Python中，super()是一个内置函数，用于调用父类(或超类)的一个方法。当你重写一个方法时，通常仍然需要调用该方法在父类中的实现。这就是super()函数的用途。它提供了一种动态的方式来调用父类的方法，而不是硬编码父类的名称。
+
+super()函数通常用在类的方法中，特别是__init__和__new__这样的特殊方法中，以及当你想要调用被重写的方法的父类版本时。
+
+下面是super()在子类的__init__方法中的一个常见用法：
+
+class Parent:
+    def __init__(self):
+        print("Initializing Parent")
+
+class Child(Parent):
+    def __init__(self):
+        super().__init__()  # 调用Parent类的__init__方法
+        print("Initializing Child")
+
+# 创建Child类的实例
+child = Child()
+
+# 输出:
+# Initializing Parent
+# Initializing Child
+
+在这个例子中，当创建Child类的实例时，首先会调用Child类的__init__方法。在Child类的__init__方法中，super().__init__()被调用，这会转而调用Parent类的__init__方法。之后，Child类的__init__方法的剩余部分继续执行。
+
+使用super()的一个好处是，即使Parent类在Child类定义之后被更改或重构（例如，通过多重继承或方法调用顺序的更改），Child类中的代码也不需要更改。这是因为super()会动态地找到正确的父类方法并调用它。
+
+在多重继承的情况下，super()也提供了一种机制来按照方法解析顺序（MRO, Method Resolution Order）调用所有父类的方法。
+
+例如：
+
+
+class A:
+    def show(self):
+        print('A')
+
+class B(A):
+    def show(self):
+        super().show()
+        print('B')
+
+class C(A):
+    def show(self):
+        super().show()
+        print('C')
+
+class D(B, C):
+    def show(self):
+        super().show()
+        print('D')
+
+d = D()
+d.show()
+输出将会是：
+
+A
+B
+C
+D
+
+在这个例子中，D类继承自B和C，而B和C都继承自A。当调用D类的show方法时，super().show()会首先调用B类的show方法，然后是C类的show方法，最后是A类的show方法。这是由Python的MRO机制决定的。
+</pre>
+
+</section>
+<!--
+<section id="XXXX">
+<h2>魔法方法大全</h2>
+<pre style="white-space: pre-wrap;">
+
+</pre>
+
+</section>
+-->
 
 
 </section>
@@ -184,10 +496,11 @@ class Cat(Animal):
   <div>
     <h3><a href="../contents.html">目录</a></h3>
     <ul>
-<li><a class="reference internal" href="#if-statements">4.1.if 语句</a></li>
-<li><a class="reference internal" href="#if-statements2">4.1.if 语句</a></li>
-<li><a class="reference internal" href="#if-statements3">4.1.if 语句</a></li>
-<li><a class="reference internal" href="#if-statements4">4.1.if 语句</a></li>
+<li><a class="reference internal" href="#MagicMethod">魔法方法大全</a></li>
+<li><a class="reference internal" href="#metaclass">元类</a></li>
+<li><a class="reference internal" href="#metaclass_and_baseclass">元类和基类的区别</a></li>
+<li><a class="reference internal" href="#type">type</a></li>
+<li><a class="reference internal" href="#super">super</a></li>
 </ul>
 
   </div>
